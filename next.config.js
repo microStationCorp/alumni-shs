@@ -1,5 +1,5 @@
 module.exports = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   env: {
     MONGO_URI:
       "mongodb+srv://sherlock:bFQfINO6HTHeN1Ot@cluster0.82fho.mongodb.net/alumni?retryWrites=true&w=majority",
