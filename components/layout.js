@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Layout(props) {
+export default function Layout() {
   const classes = useStyles();
   const [Open, setOpen] = useState(false);
 
@@ -66,7 +66,7 @@ export default function Layout(props) {
             paper: classes.drawerPaper,
           }}
         >
-          <CustomDrawer />
+          <CustomDrawer toggle={handleDrawerToggle} />
         </Drawer>
       </div>
     </>

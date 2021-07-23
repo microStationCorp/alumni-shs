@@ -1,14 +1,8 @@
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core";
+import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { pages } from "../utils/pages";
 
-export default function CustomDrawer() {
+export default function CustomDrawer({ toggle }) {
   const router = useRouter();
   return (
     <div>
@@ -19,7 +13,10 @@ export default function CustomDrawer() {
             <ListItemText
               style={{ textAlign: "center" }}
               primary={p.name}
-              onClick={() => router.push(p.link)}
+              onClick={() => {
+                router.push(p.link);
+                toggle();
+              }}
             />
           </ListItem>
         ))}
