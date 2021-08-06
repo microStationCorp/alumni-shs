@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const AlumniSchema = new mongoose.Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   passoutYear: {
-    type: Number,
-    require: true,
+    type: String,
+    required: true,
   },
   admin: {
     type: Boolean,
@@ -15,21 +15,30 @@ const AlumniSchema = new mongoose.Schema({
   },
   madhyamikRoll: {
     type: String,
-    require: true,
+    required: true,
   },
   madhyamikNo: {
     type: String,
-    require: true,
+    required: true,
   },
   description: {
     type: String,
   },
   phoneNo: {
-    type: Number,
-    require: true,
+    type: String,
+    d: true,
   },
   email: {
     type: String,
+  },
+  gender: {
+    type: String,
+    default: "male",
+  },
+  dob: {
+    type: Date,
+    required: true,
+    default: Date.now,
   },
 });
 
