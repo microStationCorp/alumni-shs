@@ -1,12 +1,13 @@
-import Head from "next/head";
+import CustomHead from "../components/headMeta"
 
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Home Page</title>
-      </Head>
-      <div>home page</div>
+      <CustomHead
+        title="Home Page"
+        description="this is Home Page"
+      />
+      <div>Home Page</div>
     </>
   );
 }

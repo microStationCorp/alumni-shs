@@ -13,32 +13,16 @@ const AlumniSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  madhyamikRoll: {
-    type: String,
-    required: true,
-  },
-  madhyamikNo: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-  },
   phoneNo: {
     type: String,
-    d: true,
+    required: true,
   },
   email: {
     type: String,
   },
   gender: {
     type: String,
-    default: "male",
-  },
-  dob: {
-    type: Date,
     required: true,
-    default: Date.now,
   },
 });
 
