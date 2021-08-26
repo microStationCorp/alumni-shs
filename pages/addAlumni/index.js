@@ -7,7 +7,7 @@ import {
   Select,
   TextField,
   Typography,
-} from "utils/exports";
+} from "@material-ui/core";
 import { useState } from "react";
 import CustomHead from "components/headMeta";
 import { RegisterAlumniValidation } from "utils/validation";
@@ -51,9 +51,6 @@ export default function AddAlumni() {
 
       {/* main container */}
       <Container maxWidth="md">
-        <style jsx global>
-          {"body {background: aquamarine;}"}
-        </style>
         <Paper style={{ padding: "10px" }} elevation={3}>
           <Grid
             container
@@ -182,9 +179,12 @@ function Entry({ label, data, handler }) {
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
-            variant="standard"
+            required
+            label={label}
+            variant="outlined"
             value={data}
             onChange={handler}
+            size="small"
           />
         </Grid>
       </Grid>

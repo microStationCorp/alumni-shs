@@ -1,4 +1,4 @@
-import { Divider, List, ListItem, ListItemText } from "utils/exports";
+import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { pages } from "utils/pages";
 

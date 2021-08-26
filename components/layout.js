@@ -1,16 +1,16 @@
 import {
-  MenuIcon,
-  PersonAddIcon,
-  ListIcon,
   AppBar,
   Drawer,
   Grid,
   IconButton,
-  makeStyles,
   Toolbar,
   Tooltip,
   Typography,
-} from "utils/exports";
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import MenuIcon from "@material-ui/icons/Menu";
+import ListIcon from "@material-ui/icons/List";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import { useState } from "react";
 import CustomDrawer from "./drawer";
 import NextLink from "next/link";
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
   },
-  toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
   },
