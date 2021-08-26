@@ -7,9 +7,10 @@ import {
   Select,
   TextField,
   Typography,
-} from "@material-ui/core";
+} from "utils/exports";
 import { useState } from "react";
-import CustomHead from "../../components/headMeta";
+import CustomHead from "components/headMeta";
+import { RegisterAlumniValidation } from "utils/validation";
 
 export default function AddAlumni() {
   const [fname, setFname] = useState("");
@@ -24,7 +25,23 @@ export default function AddAlumni() {
 
   const onsubmit = () => {
     console.log(fname, pnumber, email, year, gender);
+
+    const { error, value } = RegisterAlumniValidation({
+      full_name: fname.trim().split(" "),
+      phone_number: pnumber,
+      email,
+      gender,
+      pass_out_year: year,
+    });
+
+    if (!error) {
+      console.log(value);
+    } else {
+      console.log(error);
+    }
+
   };
+  
   return (
     <>
       <CustomHead

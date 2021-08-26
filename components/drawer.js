@@ -1,6 +1,6 @@
-import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
+import { Divider, List, ListItem, ListItemText } from "utils/exports";
 import { useRouter } from "next/router";
-import { pages } from "../utils/pages";
+import { pages } from "utils/pages";
 
 export default function CustomDrawer({ toggle }) {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import CustomHead from "../components/headMeta"
+import CustomHead from "components/headMeta"
 
 export default function Home() {
   return (

@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from "utils/exports";
 import Head from "next/head";
 
 export default function ErrorPageNotFound() {
