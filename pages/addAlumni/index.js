@@ -7,12 +7,18 @@ import {
   Select,
   TextField,
   Typography,
+  Snackbar,
+  IconButton,
 } from "@material-ui/core";
 import { useState } from "react";
 import CustomHead from "components/headMeta";
 import { RegisterAlumniValidation } from "utils/validation";
+import CloseIcon from "@material-ui/icons/Close";
 
 export default function AddAlumni() {
+  const [openAlert, setAlert] = useState(false);
+  const [alertMsg, setMsg] = useState("");
+
   const [fname, setFname] = useState("");
   const [pnumber, setPnumber] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +29,12 @@ export default function AddAlumni() {
     binder(e.target.value);
   };
 
+  const handleClose = () => {
+    setAlert(false);
+  };
+
   const onsubmit = () => {
+    setAlert(true);
     console.log(fname, pnumber, email, year, gender);
 
     const { error, value } = RegisterAlumniValidation({
@@ -37,11 +48,22 @@ export default function AddAlumni() {
     if (!error) {
       console.log(value);
     } else {
-      console.log(error);
+      console.log(error.details[0].message);
+      setMsg(error.details[0].message);
     }
-
   };
-  
+
+  const action = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleClose}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
+
   return (
     <>
       <CustomHead
@@ -51,6 +73,14 @@ export default function AddAlumni() {
 
       {/* main container */}
       <Container maxWidth="md">
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message={alertMsg}
+          action={action}
+        />
+
         <Paper style={{ padding: "10px" }} elevation={3}>
           <Grid
             container
