@@ -2,22 +2,27 @@ import {
   Button,
   Container,
   Grid,
-  MenuItem,
   Paper,
-  Select,
-  TextField,
   Typography,
-  Snackbar,
   IconButton,
 } from "@material-ui/core";
 import { useState } from "react";
 import CustomHead from "components/headMeta";
 import { RegisterAlumniValidation } from "utils/validation";
 import CloseIcon from "@material-ui/icons/Close";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import {
+  FormFeedback,
+  Entry,
+  PassoutEntry,
+  GenderEntry,
+} from "components/addAlumni";
 
 export default function AddAlumni() {
   const [openAlert, setAlert] = useState(false);
   const [alertMsg, setMsg] = useState("");
+  const [errorType, setErrortype] = useState("success");
 
   const [fname, setFname] = useState("");
   const [pnumber, setPnumber] = useState("");
@@ -34,7 +39,6 @@ export default function AddAlumni() {
   };
 
   const onsubmit = () => {
-    setAlert(true);
     console.log(fname, pnumber, email, year, gender);
 
     const { error, value } = RegisterAlumniValidation({
@@ -47,10 +51,14 @@ export default function AddAlumni() {
 
     if (!error) {
       console.log(value);
+      setErrortype("success");
+      setMsg("submitted");
     } else {
       console.log(error.details[0].message);
       setMsg(error.details[0].message);
+      setErrortype("error");
     }
+    setAlert(true);
   };
 
   const action = (
@@ -73,12 +81,19 @@ export default function AddAlumni() {
 
       {/* main container */}
       <Container maxWidth="md">
-        <Snackbar
-          open={openAlert}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message={alertMsg}
+        <FormFeedback
+          openAlert={openAlert}
+          handleClose={handleClose}
+          severity={errorType}
+          alertMsg={alertMsg}
           action={action}
+          icon={
+            errorType === "error" ? (
+              <ErrorOutlineIcon fontSize="inherit" />
+            ) : (
+              <CheckCircleOutlineIcon fontSize="inherit" />
+            )
+          }
         />
 
         <Paper style={{ padding: "10px" }} elevation={3}>
@@ -126,98 +141,6 @@ export default function AddAlumni() {
           </Grid>
         </Paper>
       </Container>
-    </>
-  );
-}
-
-function GenderEntry({ gender, handleGender }) {
-  return (
-    <Grid container style={{ paddingBottom: "10px" }}>
-      <Grid item xs={12} sm={6}>
-        <Typography variant="h6">Gender :</Typography>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={gender}
-          onChange={handleGender}
-          style={{ minWidth: "200px" }}
-        >
-          {["Male", "Female", "Other"].map((g) => (
-            <MenuItem key={g} value={g}>
-              {g}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-    </Grid>
-  );
-}
-
-function PassoutEntry({ year, handleYear }) {
-  const years = [
-    "2000",
-    "2001",
-    "2002",
-    "2003",
-    "2004",
-    "2005",
-    "2006",
-    "2007",
-    "2008",
-    "2009",
-    "2010",
-    "2011",
-    "2012",
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-  ];
-  return (
-    <Grid container style={{ paddingBottom: "10px" }}>
-      <Grid item xs={12} sm={6}>
-        <Typography variant="h6">Passout Year :</Typography>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Select
-          value={year}
-          onChange={handleYear}
-          style={{ minWidth: "200px" }}
-        >
-          {years.map((g) => (
-            <MenuItem key={g} value={g}>
-              {g}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-    </Grid>
-  );
-}
-
-function Entry({ label, data, handler }) {
-  return (
-    <>
-      <Grid container style={{ paddingBottom: "10px" }}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6">{label} :</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            required
-            label={label}
-            variant="outlined"
-            value={data}
-            onChange={handler}
-            size="small"
-          />
-        </Grid>
-      </Grid>
     </>
   );
 }
