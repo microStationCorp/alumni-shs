@@ -1,5 +1,5 @@
 import CustomHead from "components/headMeta";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@mui/material";
 
 export default function Lists() {
   return (

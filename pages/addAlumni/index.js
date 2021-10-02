@@ -5,13 +5,13 @@ import {
   Paper,
   Typography,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useState } from "react";
 import CustomHead from "components/headMeta";
 import { RegisterAlumniValidation } from "utils/validation";
-import CloseIcon from "@material-ui/icons/Close";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import CloseIcon from "@mui/icons-material/Close";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import {
   FormFeedback,
   Entry,

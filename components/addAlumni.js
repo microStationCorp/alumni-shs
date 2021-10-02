@@ -7,11 +7,11 @@ import {
   TextField,
   Typography,
   Slide,
-} from "@material-ui/core";
+} from "@mui/material";
 
 function TransitionUp(props) {
-    return <Slide {...props} direction="up" />;
-  }
+  return <Slide {...props} direction="up" />;
+}
 
 const FormFeedback = ({
   openAlert,

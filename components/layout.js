@@ -6,31 +6,19 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import MenuIcon from "@material-ui/icons/Menu";
-import ListIcon from "@material-ui/icons/List";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import MenuIcon from "@mui/icons-material/Menu";
+import ListIcon from "@mui/icons-material/List";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useState } from "react";
 import CustomDrawer from "./drawer";
 import NextLink from "next/link";
 
 const drawerWidth = 150;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  drawer: {
-    width: drawerWidth,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-}));
 
 export default function Layout() {
-  const classes = useStyles();
   const [Open, setOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -39,7 +27,7 @@ export default function Layout() {
 
   return (
     <>
-      <div className={classes.root}>
+      <div  sx={{ display: 'flex' }}>
         {/* Appbar */}
         <AppBar position="static" style={{ marginBottom: "10px" }}>
           <Toolbar>
@@ -98,12 +86,16 @@ export default function Layout() {
         </AppBar>
         {/* drawer */}
         <Drawer
-          className={classes.drawer}
           anchor="left"
           open={Open}
           onClose={handleDrawerToggle}
-          classes={{
-            paper: classes.drawerPaper,
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           }}
         >
           <CustomDrawer toggle={handleDrawerToggle} />
