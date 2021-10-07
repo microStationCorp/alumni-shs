@@ -38,7 +38,7 @@ export default function AddAlumni() {
     setAlert(false);
   };
 
-  const onsubmit = () => {
+  const onsubmit = async () => {
     console.log(fname, pnumber, email, year, gender);
 
     const { error, value } = RegisterAlumniValidation({
@@ -51,6 +51,20 @@ export default function AddAlumni() {
 
     if (!error) {
       console.log(value);
+      try {
+        const res = await fetch("/api/addalumni", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(value),
+        });
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
+      } catch {
+        console.log("failed to upload");
+      }
       setErrortype("success");
       setMsg("submitted");
     } else {

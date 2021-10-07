@@ -26,8 +26,4 @@ const AlumniSchema = new mongoose.Schema({
   },
 });
 
-mongoose.models = {};
-
-var Alumni = mongoose.model("Alumni", AlumniSchema);
-
-export default Alumni;
+export default mongoose.models.Alumni || mongoose.model("Alumni", AlumniSchema);
