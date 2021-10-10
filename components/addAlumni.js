@@ -1,46 +1,11 @@
 import {
-  Alert,
   Grid,
   MenuItem,
   Select,
-  Snackbar,
   TextField,
   Typography,
   Slide,
 } from "@mui/material";
-
-function TransitionUp(props) {
-  return <Slide {...props} direction="up" />;
-}
-
-const FormFeedback = ({
-  openAlert,
-  handleClose,
-  severity,
-  alertMsg,
-  action,
-  icon,
-}) => {
-  return (
-    <Snackbar
-      open={openAlert}
-      autoHideDuration={6000}
-      onClose={handleClose}
-      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      TransitionComponent={TransitionUp}
-    >
-      <Alert
-        icon={icon}
-        severity={severity}
-        variant="filled"
-        sx={{ width: "100%" }}
-        action={action}
-      >
-        {alertMsg}
-      </Alert>
-    </Snackbar>
-  );
-};
 
 function Entry({ label, data, handler }) {
   return (
@@ -134,4 +99,4 @@ function GenderEntry({ gender, handleGender }) {
   );
 }
 
-export { FormFeedback, Entry, PassoutEntry, GenderEntry };
+export { Entry, PassoutEntry, GenderEntry };

@@ -1,26 +1,14 @@
-import {
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { Button, Container, Grid, Paper, Typography } from "@mui/material";
 import { useState } from "react";
 import CustomHead from "components/headMeta";
 import { RegisterAlumniValidation } from "utils/validation";
-import CloseIcon from "@mui/icons-material/Close";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import {
-  FormFeedback,
-  Entry,
-  PassoutEntry,
-  GenderEntry,
-} from "components/addAlumni";
+import { Entry, PassoutEntry, GenderEntry } from "components/addAlumni";
+import CustomDialog from "components/dialogmodal";
 
 export default function AddAlumni() {
-  const [openAlert, setAlert] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [alertMsg, setMsg] = useState("");
   const [errorType, setErrortype] = useState("success");
 
@@ -30,15 +18,28 @@ export default function AddAlumni() {
   const [gender, setGender] = useState("");
   const [year, setYear] = useState("");
 
+  const clearAllField = () => {
+    setFname("");
+    setPnumber("");
+    setEmail("");
+    setGender("");
+    setYear("");
+  };
+
   const handler = (e, binder) => {
     binder(e.target.value);
   };
 
-  const handleClose = () => {
-    setAlert(false);
+  const handleDialogClose = (event, reason) => {
+    if (reason !== "backdropClick") {
+      setDialogOpen(false);
+    }
   };
 
   const onsubmit = async () => {
+    setLoading(true);
+    setDialogOpen(true);
+
     const { error, value } = RegisterAlumniValidation({
       full_name: fname.toUpperCase().trim().split(" "),
       phone_number: pnumber,
@@ -56,17 +57,16 @@ export default function AddAlumni() {
         body: JSON.stringify(value),
       })
         .then((res) => {
+          setLoading(false);
           res.json().then((data) => {
             if (res.status !== 201) {
-              console.log(data.msg);
+              // console.log(data.msg);
               setErrortype("error");
               setMsg(data.msg);
-              setAlert(true);
             } else {
-              console.log(data);
+              // console.log(data);
               setErrortype("success");
               setMsg("submitted");
-              setAlert(true);
             }
           });
         })
@@ -74,22 +74,11 @@ export default function AddAlumni() {
           console.log("failed to upload");
         });
     } else {
+      setLoading(false);
       setErrortype("error");
       setMsg(error.details[0].message);
-      setAlert(true);
     }
   };
-
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
 
   return (
     <>
@@ -100,19 +89,14 @@ export default function AddAlumni() {
 
       {/* main container */}
       <Container maxWidth="md">
-        <FormFeedback
-          openAlert={openAlert}
-          handleClose={handleClose}
-          severity={errorType}
+        {/* dialog modal */}
+        <CustomDialog
+          dialogOpen={dialogOpen}
+          loading={loading}
+          errorType={errorType}
           alertMsg={alertMsg}
-          action={action}
-          icon={
-            errorType === "error" ? (
-              <ErrorOutlineIcon fontSize="inherit" />
-            ) : (
-              <CheckCircleOutlineIcon fontSize="inherit" />
-            )
-          }
+          handleDialogClose={handleDialogClose}
+          clearAllField={clearAllField}
         />
 
         <Paper style={{ padding: "10px" }} elevation={3}>
