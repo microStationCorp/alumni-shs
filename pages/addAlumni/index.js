@@ -39,10 +39,8 @@ export default function AddAlumni() {
   };
 
   const onsubmit = async () => {
-    console.log(fname, pnumber, email, year, gender);
-
     const { error, value } = RegisterAlumniValidation({
-      full_name: fname.trim().split(" "),
+      full_name: fname.toUpperCase().trim().split(" "),
       phone_number: pnumber,
       email,
       gender,
@@ -50,29 +48,36 @@ export default function AddAlumni() {
     });
 
     if (!error) {
-      console.log(value);
-      try {
-        const res = await fetch("/api/addalumni", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(value),
+      fetch("/api/addalumni", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(value),
+      })
+        .then((res) => {
+          res.json().then((data) => {
+            if (res.status !== 201) {
+              console.log(data.msg);
+              setErrortype("error");
+              setMsg(data.msg);
+              setAlert(true);
+            } else {
+              console.log(data);
+              setErrortype("success");
+              setMsg("submitted");
+              setAlert(true);
+            }
+          });
+        })
+        .catch(() => {
+          console.log("failed to upload");
         });
-        if (!res.ok) {
-          throw new Error(res.status);
-        }
-      } catch {
-        console.log("failed to upload");
-      }
-      setErrortype("success");
-      setMsg("submitted");
     } else {
-      console.log(error.details[0].message);
-      setMsg(error.details[0].message);
       setErrortype("error");
+      setMsg(error.details[0].message);
+      setAlert(true);
     }
-    setAlert(true);
   };
 
   const action = (
