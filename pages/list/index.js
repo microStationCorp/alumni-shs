@@ -1,7 +1,16 @@
 import CustomHead from "components/headMeta";
-import { Grid, Paper } from "@mui/material";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Grid,
+  Typography,
+} from "@mui/material";
+import dbConnect from "utils/dbConnect";
+import alumniModel from "model/alumniModel";
+import { CustomCard } from "components/list";
 
-export default function Lists() {
+export default function Lists({ alumnis }) {
   return (
     <>
       <CustomHead
@@ -9,22 +18,23 @@ export default function Lists() {
         description="this page contains list of alumnis'"
       />
       <Grid container justifyContent="space-around">
-        <Grid item sm={5} xs={10}>
-          <Paper elevation={3}>
-            <div>list of alumni page</div>
-          </Paper>
-        </Grid>
-        <Grid item sm={5} xs={10}>
-          <Paper elevation={3}>
-            <div>list of alumni page</div>
-          </Paper>
-        </Grid>
-        <Grid item sm={5} xs={10}>
-          <Paper elevation={3}>
-            <div>list of alumni page</div>
-          </Paper>
-        </Grid>
+        {alumnis.map((alumni) => (
+          <CustomCard alumni={alumni} key={alumni._id} />
+        ))}
       </Grid>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  await dbConnect();
+  const results = await alumniModel.find({}).select("-__v");
+  const alumnis = results.map((doc) => {
+    const alumni = doc.toObject();
+    alumni._id = alumni._id.toString();
+    return alumni;
+  });
+  return {
+    props: { alumnis },
+  };
 }
