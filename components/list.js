@@ -5,6 +5,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { Bull } from "./bull";
 
 export const CustomCard = ({ alumni }) => {
   return (
@@ -14,7 +15,7 @@ export const CustomCard = ({ alumni }) => {
           <CardContent>
             <Typography variant="h6" gutterBottom color="#61504a">
               {alumni.name}
-              {alumni.admin ? <Typography>{"(admin)"}</Typography> : null}
+              {alumni.admin ? <Bull /> : null}
             </Typography>
             <Typography color="text.secondary" sx={{ fontSize: 14 }}>
               Gender : {alumni.gender}

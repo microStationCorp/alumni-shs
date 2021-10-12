@@ -32,6 +32,7 @@ export async function getStaticProps() {
   const results = await alumniModel.find({}).select("-__v");
   const alumnis = results.map((doc) => {
     return {
+      admin: doc.admin,
       name: doc.name,
       _id: doc._id.toString(),
       phoneNo: doc.phoneNo,
