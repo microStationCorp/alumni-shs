@@ -24,6 +24,10 @@ const AlumniSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  dateOfRegister: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export default mongoose.models.Alumni || mongoose.model("Alumni", AlumniSchema);
