@@ -27,7 +27,7 @@ export default function Lists({ alumnis }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   await dbConnect();
   const results = await alumniModel.find({}).select("-__v");
   const alumnis = results.map((doc) => {
@@ -43,5 +43,6 @@ export async function getServerSideProps() {
   });
   return {
     props: { alumnis },
+    revalidate: 1,
   };
 }
