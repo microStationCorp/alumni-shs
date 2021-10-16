@@ -1,28 +1,59 @@
 import CustomHead from "components/headMeta";
-import { Grid } from "@mui/material";
+import { Container } from "@mui/material";
 import dbConnect from "utils/dbConnect";
 import alumniModel from "model/alumniModel";
-import { CustomCard } from "components/list";
-import { NoDataCard } from "components/list";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import LinkIcon from "@mui/icons-material/Link";
+import { useRouter } from "next/router";
 
 export default function Lists({ alumnis }) {
+  const router = useRouter();
+  const column = [
+    { field: "name", headerName: "Name", flex: 1, minWidth: 150 },
+    {
+      field: "passoutYear",
+      headerName: "Pass Out Year",
+      flex: 1,
+      minWidth: 150,
+    },
+    {
+      field: "dateOfRegister",
+      headerName: "Date of Register",
+      flex: 1,
+      minWidth: 180,
+    },
+    {
+      field: "admin",
+      headerName: "Is Admin?",
+      flex: 1,
+      type: "boolean",
+      minWidth: 100,
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Go to",
+      width: 100,
+      // eslint-disable-next-line react/display-name
+      getActions: (params) => [
+        // eslint-disable-next-line react/jsx-key
+        <GridActionsCellItem
+          icon={<LinkIcon />}
+          label="Go To"
+          onClick={() => router.push(`/alumni/${params.id}`)}
+        />,
+      ],
+    },
+  ];
   return (
     <>
       <CustomHead
         title="List of Alumni"
         description="this page contains list of alumnis'"
       />
-      <Grid container justifyContent="space-around">
-        {alumnis.length === 0 ? (
-          <NoDataCard />
-        ) : (
-          <>
-            {alumnis.map((alumni) => (
-              <CustomCard alumni={alumni} key={alumni._id} />
-            ))}
-          </>
-        )}
-      </Grid>
+      <Container style={{ width: "100%" }}>
+        <DataGrid autoHeight rows={alumnis} columns={column} />
+      </Container>
     </>
   );
 }
@@ -34,12 +65,9 @@ export async function getStaticProps() {
     return {
       admin: doc.admin,
       name: doc.name,
-      _id: doc._id.toString(),
-      phoneNo: doc.phoneNo,
+      id: doc._id.toString(),
       passoutYear: doc.passoutYear,
-      email: doc.email,
-      gender: doc.gender,
-      dateOfRegister: doc.dateOfRegister,
+      dateOfRegister: doc.dateOfRegister.toDateString(),
     };
   });
   return {
