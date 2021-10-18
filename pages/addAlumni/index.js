@@ -49,7 +49,7 @@ export default function AddAlumni() {
     });
 
     if (!error) {
-      fetch("/api/addalumni", {
+      fetch("/api/addAlumni", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

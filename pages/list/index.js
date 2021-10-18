@@ -1,50 +1,30 @@
-import CustomHead from "components/headMeta";
 import { Container } from "@mui/material";
-import dbConnect from "utils/dbConnect";
-import alumniModel from "model/alumniModel";
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import LinkIcon from "@mui/icons-material/Link";
-import { useRouter } from "next/router";
+import { DataGrid } from "@mui/x-data-grid";
 
-export default function Lists({ alumnis }) {
-  const router = useRouter();
-  const column = [
-    { field: "name", headerName: "Name", flex: 1, minWidth: 150 },
-    {
-      field: "passoutYear",
-      headerName: "Pass Out Year",
-      flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "dateOfRegister",
-      headerName: "Date of Register",
-      flex: 1,
-      minWidth: 180,
-    },
-    {
-      field: "admin",
-      headerName: "Is Admin?",
-      flex: 1,
-      type: "boolean",
-      minWidth: 100,
-    },
-    {
-      field: "actions",
-      type: "actions",
-      headerName: "Go to",
-      width: 100,
-      // eslint-disable-next-line react/display-name
-      getActions: (params) => [
-        // eslint-disable-next-line react/jsx-key
-        <GridActionsCellItem
-          icon={<LinkIcon />}
-          label="Go To"
-          onClick={() => router.push(`/alumni/${params.id}`)}
-        />,
-      ],
-    },
-  ];
+import CustomHead from "components/headMeta";
+import { ColumnsDataGrid } from "utils/listConst";
+import { useEffect, useState } from "react";
+
+export default function Lists() {
+  const columns = ColumnsDataGrid();
+  const [page, setPage] = useState(0);
+  const [rowCount, setRowCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/totalAlumni").then((res) =>
+      res.json().then((doc) => setRowCount(doc.count))
+    );
+    fetch(`/api/paginate/${page}`).then((res) =>
+      res.json().then((doc) => {
+        setRows(doc.data);
+      })
+    );
+    setLoading(false);
+  }, [page]);
+
   return (
     <>
       <CustomHead
@@ -52,26 +32,39 @@ export default function Lists({ alumnis }) {
         description="this page contains list of alumnis'"
       />
       <Container style={{ width: "100%" }}>
-        <DataGrid autoHeight rows={alumnis} columns={column} />
+        <DataGrid
+          rowCount={rowCount}
+          autoHeight
+          disableColumnMenu
+          rows={rows}
+          columns={columns}
+          page={page}
+          onPageChange={async (newPage) => setPage(newPage)}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          paginationMode="server"
+          pagination
+          loading={loading}
+        />
       </Container>
     </>
   );
 }
 
-export async function getStaticProps() {
-  await dbConnect();
-  const results = await alumniModel.find({}).select("-__v");
-  const alumnis = results.map((doc) => {
-    return {
-      admin: doc.admin,
-      name: doc.name,
-      id: doc._id.toString(),
-      passoutYear: doc.passoutYear,
-      dateOfRegister: doc.dateOfRegister.toDateString(),
-    };
-  });
-  return {
-    props: { alumnis },
-    revalidate: 1,
-  };
-}
+// export async function getStaticProps() {
+//   await dbConnect();
+//   const results = await alumniModel.find({}).select("-__v").skip(0).limit(2);
+//   const alumnis = results.map((doc) => {
+//     return {
+//       admin: doc.admin,
+//       name: doc.name,
+//       id: doc._id.toString(),
+//       passoutYear: doc.passoutYear,
+//       dateOfRegister: doc.dateOfRegister.toDateString(),
+//     };
+//   });
+//   return {
+//     props: { alumnis },
+//     revalidate: 1,
+//   };
+// }
