@@ -13,16 +13,31 @@ export default function Lists() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("/api/totalAlumni").then((res) =>
-      res.json().then((doc) => setRowCount(doc.count))
-    );
-    fetch(`/api/paginate/${page}`).then((res) =>
-      res.json().then((doc) => {
-        setRows(doc.data);
-      })
-    );
-    setLoading(false);
+    let active = true;
+
+    (async () => {
+      setLoading(true);
+
+      fetch("/api/totalAlumni").then((res) =>
+        res.json().then((doc) => setRowCount(doc.count))
+      );
+
+      fetch(`/api/paginate/${page}`).then((res) =>
+        res.json().then((doc) => {
+          setRows(doc.data);
+        })
+      );
+
+      if (!active) {
+        return;
+      }
+
+      setLoading(false);
+    })();
+
+    return () => {
+      active = false;
+    };
   }, [page]);
 
   return (
