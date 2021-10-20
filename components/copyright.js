@@ -10,7 +10,7 @@ export function Copyright() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "90vh",
+        minHeight: "20vh",
       }}
     >
       <Box

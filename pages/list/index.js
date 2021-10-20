@@ -9,6 +9,8 @@ import {
   Paper,
 } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
+import CloseIcon from "@mui/icons-material/Close";
+import DoneIcon from "@mui/icons-material/Done";
 
 import CustomHead from "components/headMeta";
 import { TableDataComp } from "components/listComp";
@@ -70,7 +72,13 @@ export default function Lists({ alumnis }) {
                     name={data.name}
                     poy={data.passoutYear}
                     dor={data.dateOfRegister}
-                    ia={data.admin ? "yes" : "no"}
+                    ia={
+                      data.admin ? (
+                        <DoneIcon color="success" sx={{ fontSize: 15 }} />
+                      ) : (
+                        <CloseIcon color="error" sx={{ fontSize: 15 }} />
+                      )
+                    }
                   />
                 ))}
               </TableBody>
@@ -99,4 +107,3 @@ export async function getStaticProps() {
     revalidate: 1,
   };
 }
-
