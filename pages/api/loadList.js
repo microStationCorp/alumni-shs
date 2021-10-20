@@ -3,12 +3,12 @@ import dbConnect from "utils/dbConnect";
 
 export default async function handler(req, res) {
   await dbConnect();
-  const { page } = req.query;
+  const { skipNumber } = req.body;
 
   alumniModel
     .find({})
-    .skip(parseInt(page) * 5)
-    .limit(5)
+    .skip(skipNumber)
+    .limit(8)
     .then((result) => {
       res.status(200).json({
         success: true,
@@ -21,6 +21,7 @@ export default async function handler(req, res) {
             dateOfRegister: doc.dateOfRegister.toDateString(),
           };
         }),
+        end: skipNumber > result.length ? true : false,
       });
     });
 }
