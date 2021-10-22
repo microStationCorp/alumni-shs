@@ -1,11 +1,20 @@
-import { TableCell, TableRow, Typography } from "@mui/material";
+import {
+  Box,
+  LinearProgress,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
 export const Loader = () => {
   return (
     <>
-      <Typography align="center" variant="h5">
-        Loading...
-      </Typography>
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress color="secondary" />
+        <Typography align="center" sx={{ backgroundColor: "#c6c8c8" }}>
+          Loading...
+        </Typography>
+      </Box>
     </>
   );
 };
@@ -13,7 +22,7 @@ export const Loader = () => {
 export const Finished = () => {
   return (
     <>
-      <Typography variant="h5" align="center">
+      <Typography align="center" sx={{ backgroundColor: "#c6c8c8" }}>
         Nothing More...
       </Typography>
     </>

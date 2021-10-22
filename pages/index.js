@@ -1,5 +1,4 @@
 import CustomHead from "components/headMeta";
-import { useEffect } from "react";
 
 export default function Home() {
   return (
