@@ -16,7 +16,7 @@ import CustomHead from "components/headMeta";
 import { TableDataComp } from "components/listComp";
 import dbConnect from "utils/dbConnect";
 import alumniModel from "model/alumniModel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "components/listComp";
 import { Finished } from "components/listComp";
 
@@ -25,18 +25,22 @@ export default function Lists({ alumnis }) {
   const [end, setEnd] = useState(false);
 
   const fetchData = async () => {
-    fetch(`/api/loadList/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ skipNumber: rowData.length }),
-    }).then((res) =>
-      res.json().then((doc) => {
-        setRowData([...rowData, ...doc.data]);
-        setEnd(doc.end);
-      })
-    );
+    window.addEventListener("scroll", function () {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        fetch(`/api/loadList/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ skipNumber: rowData.length }),
+        }).then((res) =>
+          res.json().then((doc) => {
+            setRowData([...rowData, ...doc.data]);
+            setEnd(doc.end);
+          })
+        );
+      }
+    });
   };
 
   return (
@@ -92,7 +96,7 @@ export default function Lists({ alumnis }) {
 
 export async function getStaticProps() {
   await dbConnect();
-  const results = await alumniModel.find({}).select("-__v").skip(0).limit(8);
+  const results = await alumniModel.find({}).select("-__v").skip(0).limit(10);
   const alumnis = results.map((doc) => {
     return {
       admin: doc.admin,
