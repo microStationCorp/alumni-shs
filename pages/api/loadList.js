@@ -3,25 +3,28 @@ import dbConnect from "utils/dbConnect";
 
 export default async function handler(req, res) {
   await dbConnect();
-  const { skipNumber } = req.body;
+  const { method } = req;
 
-  alumniModel
-    .find({})
-    .skip(skipNumber)
-    .limit(8)
-    .then((result) => {
-      res.status(200).json({
-        success: true,
-        data: result.map((doc) => {
-          return {
-            admin: doc.admin,
-            name: doc.name,
-            id: doc._id.toString(),
-            passoutYear: doc.passoutYear,
-            dateOfRegister: doc.dateOfRegister.toDateString(),
-          };
-        }),
-        end: skipNumber > result.length ? true : false,
-      });
-    });
+  switch (method) {
+    case "POST":
+      try {
+        const { skipNumber } = req.body;
+        const results = await alumniModel.find({}).skip(skipNumber).limit(8);
+        res.status(200).json({
+          success: true,
+          data: results.map((doc) => {
+            return {
+              admin: doc.admin,
+              name: doc.name,
+              id: doc._id.toString(),
+              passoutYear: doc.passoutYear,
+              dateOfRegister: doc.dateOfRegister.toDateString(),
+            };
+          }),
+          end: skipNumber > results.length ? true : false,
+        });
+      } catch (error) {
+        res.status(400).json({ success: false, msg: error });
+      }
+  }
 }
