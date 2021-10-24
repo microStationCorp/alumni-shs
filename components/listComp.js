@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   LinearProgress,
   TableCell,
   TableRow,
@@ -10,10 +11,26 @@ export const Loader = () => {
   return (
     <>
       <Box sx={{ width: "100%" }}>
-        <LinearProgress color="secondary" />
         <Typography align="center" sx={{ backgroundColor: "#c6c8c8" }}>
           Loading...
         </Typography>
+      </Box>
+    </>
+  );
+};
+
+export const LoadMore = ({ setLoad, loading }) => {
+  return (
+    <>
+      <Box sx={{ width: "100%", textAlign: "center", paddingTop: "10px" }}>
+        {loading && <LinearProgress color="secondary" />}
+        <Button
+          onClick={() => setLoad(true)}
+          variant="outlined"
+          disabled={loading}
+        >
+          Load More
+        </Button>
       </Box>
     </>
   );

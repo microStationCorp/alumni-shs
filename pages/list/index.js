@@ -16,32 +16,58 @@ import CustomHead from "components/headMeta";
 import { TableDataComp } from "components/listComp";
 import dbConnect from "utils/dbConnect";
 import alumniModel from "model/alumniModel";
-import { useEffect, useState } from "react";
-import { Loader } from "components/listComp";
+import { useState } from "react";
 import { Finished } from "components/listComp";
+import { LoadMore } from "components/listComp";
+import { useEffect } from "react";
 
 export default function Lists({ alumnis }) {
+  const [loading, setLoading] = useState(false);
   const [rowData, setRowData] = useState([...alumnis]);
   const [end, setEnd] = useState(false);
+  const [loadmore, setLoadmore] = useState(false);
 
-  const fetchData = async () => {
-    window.addEventListener("scroll", function () {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        fetch(`/api/loadList/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ skipNumber: rowData.length }),
-        }).then((res) =>
-          res.json().then((doc) => {
-            setRowData([...rowData, ...doc.data]);
-            setEnd(doc.end);
-          })
-        );
-      }
-    });
-  };
+  useEffect(() => {
+    if (loadmore) {
+      setLoading(true);
+      fetch(`/api/loadList/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ skipNumber: rowData.length }),
+      }).then((res) =>
+        res.json().then((doc) => {
+          setRowData([...rowData, ...doc.data]);
+          setEnd(doc.end);
+        })
+      );
+      setLoading(false);
+    }
+    setLoadmore(false);
+  }, [loadmore, rowData]);
+
+  // const fetchData = async () => {
+  //   if (loadmore) {
+  //     console.log("load more data");
+  //   }
+  // window.addEventListener("scroll", function () {
+  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  //     fetch(`/api/loadList/`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ skipNumber: rowData.length }),
+  //     }).then((res) =>
+  //       res.json().then((doc) => {
+  //         setRowData([...rowData, ...doc.data]);
+  //         setEnd(doc.end);
+  //       })
+  //     );
+  //   }
+  // });
+  // };
 
   return (
     <>
@@ -52,9 +78,10 @@ export default function Lists({ alumnis }) {
       <Container style={{ width: "100%" }}>
         <InfiniteScroll
           dataLength={rowData.length}
-          next={fetchData}
+          // next={fetchData}
           hasMore={!end}
-          loader={<Loader />}
+          loader={<LoadMore setLoad={setLoadmore} loading={loading} />}
+          // loader={<Loader />}
           endMessage={<Finished />}
         >
           <TableContainer component={Paper}>
