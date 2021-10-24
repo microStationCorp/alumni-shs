@@ -19,16 +19,12 @@ export const Loader = () => {
   );
 };
 
-export const LoadMore = ({ setLoad, loading }) => {
+export const LoadMore = ({ setLoad }) => {
   return (
     <>
       <Box sx={{ width: "100%", textAlign: "center", paddingTop: "10px" }}>
-        {loading && <LinearProgress color="secondary" />}
-        <Button
-          onClick={() => setLoad(true)}
-          variant="outlined"
-          disabled={loading}
-        >
+        {/* {loading && <LinearProgress color="secondary" />} */}
+        <Button onClick={() => setLoad(true)} variant="outlined">
           Load More
         </Button>
       </Box>
