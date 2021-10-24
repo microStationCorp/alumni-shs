@@ -7,6 +7,7 @@ import {
   TableCell,
   TableBody,
   Paper,
+  LinearProgress,
 } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CloseIcon from "@mui/icons-material/Close";
@@ -47,28 +48,6 @@ export default function Lists({ alumnis }) {
     setLoadmore(false);
   }, [loadmore, rowData]);
 
-  // const fetchData = async () => {
-  //   if (loadmore) {
-  //     console.log("load more data");
-  //   }
-  // window.addEventListener("scroll", function () {
-  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-  //     fetch(`/api/loadList/`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ skipNumber: rowData.length }),
-  //     }).then((res) =>
-  //       res.json().then((doc) => {
-  //         setRowData([...rowData, ...doc.data]);
-  //         setEnd(doc.end);
-  //       })
-  //     );
-  //   }
-  // });
-  // };
-
   return (
     <>
       <CustomHead
@@ -80,7 +59,13 @@ export default function Lists({ alumnis }) {
           dataLength={rowData.length}
           // next={fetchData}
           hasMore={!end}
-          loader={<LoadMore setLoad={setLoadmore} loading={loading} />}
+          loader={
+            !loading ? (
+              <LoadMore setLoad={setLoadmore} loadmore={loadmore} />
+            ) : (
+              <LinearProgress color="secondary" />
+            )
+          }
           // loader={<Loader />}
           endMessage={<Finished />}
         >
@@ -115,6 +100,7 @@ export default function Lists({ alumnis }) {
               </TableBody>
             </Table>
           </TableContainer>
+          {/* {loading ? <LinearProgress color="secondary" /> : null} */}
         </InfiniteScroll>
       </Container>
     </>
